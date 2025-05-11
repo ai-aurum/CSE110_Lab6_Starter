@@ -8,7 +8,7 @@ class RecipeCard extends HTMLElement {
 
 		// EXPOSE - START (All expose numbers start with A)
 		// A1. TODO - Attach the shadow DOM to this Web Component (leave the mode open)
-		const shadow = host.attachShadow({ mode: "open" });
+		const shadow = this.attachShadow({ mode: "open" });
 		// A2. TODO - Create an <article> element - This will hold our markup once our data is set
 		const arti = document.createElement("article");
 		// A3. TODO - Create a style element - This will hold all of the styles for the Web Component
@@ -121,7 +121,7 @@ class RecipeCard extends HTMLElement {
 		if (!data) return;
 
 		// A6. TODO - Select the <article> we added to the Shadow DOM in the constructor
-		const articleSelect = shadow.querySelector("article");
+		let selectedArticle = this.shadow.querySelector('article');
 		// A7. TODO - Set the contents of the <article> with the <article> template given in
 		//           cardTemplate.html and the data passed in (You should only have one <article>,
 		//           do not nest an <article> inside another <article>). You should use template
@@ -129,27 +129,22 @@ class RecipeCard extends HTMLElement {
 		// 			 Do NOT include the <article> tags within the innerHTML of the element you create.
 		//           Remember to replace all the placeholders in the template with the data passed in.
 		//           i.e. imgSrc, titleLnk, etc
-		fetch('cardTemplate.html') 
-		.then(reponse => response.text())
-		.then(html => {
-			const temp = document.createElement("template");
-			temp.innerHTML = html;
-			const extractedArticle = temp.content.querySelector("article");
-			const dupe = extractedArticle.dupeNode(true);
-			dupe.querySelector('img').src = data.imgSrc;
-			dupe.querySelector('img').alt = data.imgAlt;
-			dupe.querySelector('a').href = data.titleLnk;
-			dupe.querySelector('a').textContent = data.titleTxt;
-			dupe.querySelector('.organization').textContent = data.organization;
-			dupe.querySelector('.rating span').textContent = data.rating;
-			dupe.querySelector('.rating img').src = getStarImage(data.rating);
-			dupe.querySelector('.rating img').alt = `${data.rating} stars`;
-			dupe.querySelector('.rating span + span').textContent = `(${data.numRatings})`;
-			dupe.querySelector('time').textContent = data.lengthTime;
-			dupe.querySelector('.ingredients').textContent = data.ingredients;
-
-			articleSelect.innerHTML = dupe.innerHTML;
-		});
+		selectedArticle.innerHTML = 
+		`<img src=${data.imgSrc}
+			alt=${data.imgAlt}>
+		<p class="title">
+			<a href=${data.titleLnk}>${data.titleTxt}</a>
+		</p>
+		<p class="organization">${data.organization}</p>
+		<div class="rating">
+			<span>${data.rating}</span>
+			<img src="/assets/images/icons/${data.rating}-star.svg" alt="${data.rating} ${data.rating == 1 ? 'star' : 'stars'}">
+			<span>(${data.numRatings})</span>
+		</div>
+		<time>${data.lengthTime}</time>
+		<p class="ingredients">
+			${data.ingredients}
+		</p>`;
 	}
 }
 
