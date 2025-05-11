@@ -121,7 +121,7 @@ class RecipeCard extends HTMLElement {
 		if (!data) return;
 
 		// A6. TODO - Select the <article> we added to the Shadow DOM in the constructor
-		selectedArticle = this.shadow.querySelector('article');
+		let selectedArticle = this.shadow.querySelector('article');
 		// A7. TODO - Set the contents of the <article> with the <article> template given in
 		//           cardTemplate.html and the data passed in (You should only have one <article>,
 		//           do not nest an <article> inside another <article>). You should use template
@@ -129,20 +129,22 @@ class RecipeCard extends HTMLElement {
 		// 			 Do NOT include the <article> tags within the innerHTML of the element you create.
 		//           Remember to replace all the placeholders in the template with the data passed in.
 		//           i.e. imgSrc, titleLnk, etc
-		thumbnail = selectedArticle.querySelector('img');
-		thumbnail.src = data.imgSrc;
-		thumbnail.alt = data.imgAlt;
-
-		recipeTitle = selectedArticle.getElementsByClass('title')[0];
-		recipeTitle.a.href = data.titleLnk;
-		recipeTitle.a.textContent = data.titleTxt;
-		
-		selectedArticle.getElementsByClass('organization')[0].textContent = data.organization;
-		
-		selectedArticle.querySelector('.rating span').textContent = data.rating;
-		selectedArticle.querySelector('.rating span + span').textContent = data.numRatings;
-		selectedArticle.querySelector('time').textContent = data.lengthTime;
-		selectedarticle.querySelector('.ingredients').textContent = data.ingredients;
+		selectedArticle.innerHTML = 
+		`<img src=${data.imgSrc}
+			alt=${data.imgAlt}>
+		<p class="title">
+			<a href=${titleLnk}>${titleTxt}</a>
+		</p>
+		<p class="organization">${data.organization}}</p>
+		<div class="rating">
+			<span>${data.rating}</span>
+			<img src="/assets/images/icons/${data.rating}-star.svg" alt="${data.rating} ${data.rating == 1 ? star : stars}">
+			<span>(${data.numRatings})</span>
+		</div>
+		<time>${data.lenghtTime} min</time>
+		<p class="ingredients">
+			${data.ingredients}
+		</p>`;
 	}
 }
 
